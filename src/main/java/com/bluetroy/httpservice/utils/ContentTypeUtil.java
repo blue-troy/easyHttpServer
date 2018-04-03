@@ -1,5 +1,7 @@
 package com.bluetroy.httpservice.utils;
 
+import com.bluetroy.httpservice.StartUp;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,11 +21,9 @@ public class ContentTypeUtil {
         return CONTENT_TYPE.get(key);
     }
 
-    //todo 其实可以把contentType.txt 整理一下就不用这么麻烦
-    //todo 地址方式要改变
     private static void scanContentType() {
         try {
-            String contentType = new String(Files.readAllBytes(Paths.get("/Users/heyixin/IdeaProjects/easyHttpServer/src/main/resources/contentType.txt")));
+            String contentType = new String(Files.readAllBytes(Paths.get(StartUp.class.getResource("/").getFile()+"contentType.txt")));
             String[] contentTypeList = contentType.split("[\n]");
             for (String s : contentTypeList) {
                 String[] line = s.split("\t");
