@@ -23,7 +23,7 @@ public class ContentTypeUtil {
     //todo 地址方式要改变
     private static void scanContentType() {
         try {
-            String contentType = new String(Files.readAllBytes(Paths.get("/Users/heyixin/IdeaProjects/stream/resource/contentType.txt")));
+            String contentType = new String(Files.readAllBytes(Paths.get("/Users/heyixin/IdeaProjects/easyHttpServer/src/main/resources/contentType.txt")));
             String[] contentTypeList = contentType.split("[\n]");
             for (String s : contentTypeList) {
                 String[] line = s.split("\t");
