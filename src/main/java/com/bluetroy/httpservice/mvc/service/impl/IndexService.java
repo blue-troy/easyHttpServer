@@ -9,13 +9,21 @@ import com.bluetroy.httpservice.mvc.annotation.RequestMapping;
 import com.bluetroy.httpservice.mvc.service.ServiceInterface;
 
 @Controller()
-@RequestMapping(value = "^/$")
+@RequestMapping()
 public class IndexService implements ServiceInterface {
+
     @Override
     public Response service(Request request) {
         Response response = new Response(Status.SUCCESS_200);
         response.setContent("测试成功".getBytes());
         return response;
         // return new JsonResponse(Status.SUCCESS_200, response);
+    }
+
+    @RequestMapping(value = "/hello")
+    public Response hello(Request request) {
+        Response response = new Response(Status.SUCCESS_200);
+        response.setContent("hello".getBytes());
+        return response;
     }
 }

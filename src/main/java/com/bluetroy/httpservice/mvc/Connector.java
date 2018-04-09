@@ -33,9 +33,9 @@ public class Connector implements Runnable {
         try {
             request = RequestParser.parseRequest(client);
             if (request==null) return;
-            ServiceInterface service = ServiceRegistry.findService(request.getHeader().getURI());
+            Service service = ServiceRegistry.findService(request.getHeader().getURI());
             if (service!=null) {
-                response = service.service(request);
+                response = service.serve(request);
             } else response = new NotFoundResponse();
             attachResponse(response);
         } catch (IOException e) {

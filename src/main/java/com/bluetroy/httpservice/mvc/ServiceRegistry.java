@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,13 +22,13 @@ import java.util.TreeMap;
  */
 public class ServiceRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRegistry.class);
-    private static Map<String, ServiceInterface> services = new TreeMap<>(); //我们得到的是已排好序的结果 ?for what
+    private static Map<String, Service> services = new TreeMap<>(); //我们得到的是已排好序的结果 ?for what
 
-    private static void register(String urlPattern, ServiceInterface service) {
+    private static void register(String urlPattern, Service service) {
         services.put(urlPattern, service);
     }
 
-    public static ServiceInterface findService(String url) {
+    public static Service findService(String url) {
         for (String pattern : services.keySet()) {
             System.out.println("url = " + url + " pattern = " + pattern + url.matches(pattern));
             if (url.matches(pattern)) return services.get(pattern);
@@ -69,12 +69,19 @@ public class ServiceRegistry {
                 try {
                     Class<?> aClass = Class.forName(packageName + "." + className);
                     Annotation[] annotations = aClass.getAnnotations();
+                    //TODO 并不一定是按照顺序的，而且未来有可能不只是2个注解
                     if (annotations.length > 1 && annotations[0].annotationType().equals(Controller.class) && annotations[1].annotationType().equals(RequestMapping.class)) {
-                        RequestMapping requestMapping = aClass.getAnnotation(RequestMapping.class);
-                        for (int i = 0; i < requestMapping.value().length; i++) {
-                            register(requestMapping.value()[i],aClass.asSubclass(ServiceInterface.class).getConstructor().newInstance());
-                            System.out.println("成功注册服务: " + requestMapping.value()[i] +"  " + aClass.getName());
+                        String preUrl = aClass.getAnnotation(RequestMapping.class).value();
+                        Method[] methods = aClass.getMethods();
+                        for (Method method : methods) {
+                            Annotation requestMapping = method.getAnnotation(RequestMapping.class);
+                            if (requestMapping != null) {
+                                String pixUrl = ((RequestMapping) requestMapping).value();
+                                register(preUrl + pixUrl, new Service(aClass.asSubclass(ServiceInterface.class).getConstructor().newInstance(), method));
+                                System.out.println(((RequestMapping) requestMapping).value());
+                            }
                         }
+
                     }
 
                     //放弃以下早期的扫描服务代码
@@ -84,7 +91,15 @@ public class ServiceRegistry {
 ////                        register(annotation.urlPattern(),aClass.asSubclass(ServiceInterface.class).getDeclaredConstructor().newInstance());
 ////                        System.out.println("成功注册服务: " + annotation.urlPattern() + "  " + className);
 //                    }
-                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
