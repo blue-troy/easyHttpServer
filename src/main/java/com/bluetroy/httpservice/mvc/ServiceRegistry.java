@@ -2,14 +2,17 @@ package com.bluetroy.httpservice.mvc;
 
 
 import com.bluetroy.httpservice.StartUp;
-import com.bluetroy.httpservice.mvc.annotation.Service;
+import com.bluetroy.httpservice.mvc.annotation.Controller;
+import com.bluetroy.httpservice.mvc.annotation.RequestMapping;
 import com.bluetroy.httpservice.mvc.service.ServiceInterface;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,7 +30,7 @@ public class ServiceRegistry {
 
     public static ServiceInterface findService(String url) {
         for (String pattern : services.keySet()) {
-            System.out.println("url = " +url + " pattern = " + pattern + url.matches(pattern));
+            System.out.println("url = " + url + " pattern = " + pattern + url.matches(pattern));
             if (url.matches(pattern)) return services.get(pattern);
         }
         // 弃用 无法利用正则表达 return services.get(urlPattern);
@@ -58,25 +61,33 @@ public class ServiceRegistry {
         File dir = new File(packageURL);
         if (!dir.exists() || !dir.isDirectory()) return;
         File[] dirFiles = dir.listFiles(fileFilter);
-        for (File file : dirFiles) {
+        for (File file : dirFiles)
             if (file.isDirectory()) {
                 registerFromPackage(packageName + "." + file.getName(), file.getAbsolutePath(), fileFilter);
             } else {
                 String className = file.getName().substring(0, file.getName().indexOf("."));
                 try {
                     Class<?> aClass = Class.forName(packageName + "." + className);
-                    Service annotation = aClass.getAnnotation(Service.class);
-                    // 实现了注解，并且实现了接口
-                    if (annotation != null && ServiceInterface.class.isAssignableFrom(aClass)) {
-                        register(annotation.urlPattern(),aClass.asSubclass(ServiceInterface.class).getDeclaredConstructor().newInstance());
-                        System.out.println("成功注册服务: " + annotation.urlPattern() + "  " + className);
+                    Annotation[] annotations = aClass.getAnnotations();
+                    if (annotations.length > 1 && annotations[0].annotationType().equals(Controller.class) && annotations[1].annotationType().equals(RequestMapping.class)) {
+                        RequestMapping requestMapping = aClass.getAnnotation(RequestMapping.class);
+                        for (int i = 0; i < requestMapping.value().length; i++) {
+                            register(requestMapping.value()[i],aClass.asSubclass(ServiceInterface.class).getConstructor().newInstance());
+                            System.out.println("成功注册服务: " + requestMapping.value()[i] +"  " + aClass.getName());
+                        }
                     }
+
+                    //放弃以下早期的扫描服务代码
+                    // 实现了注解，并且实现了接口
+//                    if (annotation != null && ServiceInterface.class.isAssignableFrom(aClass)) {
+//
+////                        register(annotation.urlPattern(),aClass.asSubclass(ServiceInterface.class).getDeclaredConstructor().newInstance());
+////                        System.out.println("成功注册服务: " + annotation.urlPattern() + "  " + className);
+//                    }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
-        }
-
     }
 
 }

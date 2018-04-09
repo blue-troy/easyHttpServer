@@ -4,10 +4,12 @@ package com.bluetroy.httpservice.mvc.service.impl;
 import com.bluetroy.httpservice.http.Status;
 import com.bluetroy.httpservice.http.request.Request;
 import com.bluetroy.httpservice.http.response.Response;
-import com.bluetroy.httpservice.mvc.annotation.Service;
+import com.bluetroy.httpservice.mvc.annotation.Controller;
+import com.bluetroy.httpservice.mvc.annotation.RequestMapping;
 import com.bluetroy.httpservice.mvc.service.ServiceInterface;
 
-@Service(urlPattern = "^/$")
+@Controller()
+@RequestMapping(value = "^/$")
 public class IndexService implements ServiceInterface {
     @Override
     public Response service(Request request) {
