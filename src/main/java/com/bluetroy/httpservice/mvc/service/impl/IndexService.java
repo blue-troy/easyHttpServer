@@ -13,7 +13,6 @@ import com.bluetroy.httpservice.mvc.service.ServiceInterface;
 @RequestMapping(value = "/")
 public class IndexService implements ServiceInterface {
 
-    @Override
     @RequestMapping
     public Response service(Request request) {
         Response response = new Response(Status.SUCCESS_200);

@@ -21,7 +21,6 @@ public class StaticFileService implements ServiceInterface {
         root = StaticFileService.class.getResource("/").getPath();
     }
 
-    @Override
     public Response service(Request request) {
         String filePath = root + request.getHeader().getURI().substring(1);
         return new FileResponse(Status.SUCCESS_200, new File(filePath));
