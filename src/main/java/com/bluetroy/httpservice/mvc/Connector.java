@@ -1,14 +1,9 @@
 package com.bluetroy.httpservice.mvc;
 
 
+import com.bluetroy.httpservice.http.Http;
+import com.bluetroy.httpservice.http.HttpCreator;
 
-import com.bluetroy.httpservice.http.request.Request;
-import com.bluetroy.httpservice.http.request.RequestParser;
-import com.bluetroy.httpservice.http.response.Response;
-import com.bluetroy.httpservice.http.response.impl.NotFoundResponse;
-import com.bluetroy.httpservice.mvc.service.ServiceInterface;
-
-import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -28,25 +23,15 @@ public class Connector implements Runnable {
 
     @Override
     public void run() {
-        Request request = null;
-        Response response = null;
-        try {
-            request = RequestParser.parseRequest(client);
-            if (request==null) return;
-            Service service = ServiceRegistry.findService(request.getHeader().getURI());
-            if (service!=null) {
-                response = service.serve(request);
-            } else response = new NotFoundResponse();
-            attachResponse(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Http http = HttpCreator.create(client);
+        Service service = DispatcherServlet.dispatch(http);
+        http = service.serve(http);
+        attachResponse(http);
     }
 
-    private void attachResponse(Response response) {
+    private void attachResponse(Http http) {
         try {
-            client.register(selector, SelectionKey.OP_WRITE, response);
+            client.register(selector, SelectionKey.OP_WRITE, http);
             //todo wakeup?
             selector.wakeup();
         } catch (ClosedChannelException e) {

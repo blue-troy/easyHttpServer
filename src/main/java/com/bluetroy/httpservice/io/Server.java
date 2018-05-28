@@ -1,6 +1,6 @@
 package com.bluetroy.httpservice.io;
 
-import com.bluetroy.httpservice.http.response.Response;
+import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.httpservice.mvc.Connector;
 import com.bluetroy.httpservice.mvc.ServiceRegistry;
 
@@ -23,7 +23,7 @@ public class Server {
         long start = System.currentTimeMillis();
         ServerSocketChannel serverSocketChannel = null;
         try {
-            ServiceRegistry.registerServices();
+            ServiceRegistry.resisterService();
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);//设置非阻塞
             serverSocketChannel.bind(new InetSocketAddress(8080));
@@ -76,9 +76,9 @@ public class Server {
 
                     } else if (key.isWritable()) {
                         SocketChannel client = (SocketChannel) key.channel();
-                        Response response = (Response) key.attachment(); //再connector 中的attachResponse中被添加
+                        Http http = (Http) key.attachment(); //再connector 中的attachResponse中被添加
 
-                        ByteBuffer byteBuffer = response.getByteBuffer();
+                        ByteBuffer byteBuffer = http.getResponse().getByteBuffer();
                         if (byteBuffer.hasRemaining()) {
                             client.write(byteBuffer);
                         }

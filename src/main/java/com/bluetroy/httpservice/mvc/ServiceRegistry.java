@@ -1,19 +1,10 @@
 package com.bluetroy.httpservice.mvc;
 
 
-import com.bluetroy.httpservice.StartUp;
-import com.bluetroy.httpservice.mvc.annotation.Controller;
-import com.bluetroy.httpservice.mvc.annotation.RequestMapping;
-import com.bluetroy.httpservice.mvc.service.ServiceInterface;
 import com.bluetroy.httpservice.utils.AnnotationScanner;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -35,10 +26,10 @@ public class ServiceRegistry {
             if (url.matches(pattern)) return services.get(pattern);
         }
         // 弃用 无法利用正则表达 return services.get(urlPattern);
-        return null;
+        return new Service(null,null);
     }
 
-    private static void resisterService() {
+    public static void resisterService() {
         AnnotationScanner.registerServices();
     }
 }
