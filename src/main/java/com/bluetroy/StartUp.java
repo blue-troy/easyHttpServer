@@ -1,4 +1,4 @@
-package com.bluetroy.httpservice;
+package com.bluetroy;
 
 import com.bluetroy.httpservice.io.Server;
 

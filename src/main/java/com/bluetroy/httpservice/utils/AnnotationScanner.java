@@ -1,6 +1,6 @@
 package com.bluetroy.httpservice.utils;
 
-import com.bluetroy.httpservice.StartUp;
+import com.bluetroy.StartUp;
 import com.bluetroy.httpservice.mvc.Service;
 import com.bluetroy.httpservice.mvc.annotation.Controller;
 import com.bluetroy.httpservice.mvc.annotation.RequestMapping;

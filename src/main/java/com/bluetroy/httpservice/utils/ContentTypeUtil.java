@@ -1,6 +1,6 @@
 package com.bluetroy.httpservice.utils;
 
-import com.bluetroy.httpservice.StartUp;
+import com.bluetroy.StartUp;
 
 import java.io.IOException;
 import java.nio.file.Files;

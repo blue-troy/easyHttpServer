@@ -22,6 +22,7 @@ public class Service {
     //todo 重新了解异常处理问题
     public Http serve(Http http) {
 
+        //若没有对应的服务 返回404
         if (http.getRequest() == null || serviceInterface == null) {
             http.setResponse(new NotFoundResponse());
             return http;
