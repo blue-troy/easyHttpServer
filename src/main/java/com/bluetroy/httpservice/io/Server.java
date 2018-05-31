@@ -1,8 +1,8 @@
 package com.bluetroy.httpservice.io;
 
 import com.bluetroy.httpservice.http.Http;
-import com.bluetroy.httpservice.mvc.Connector;
-import com.bluetroy.httpservice.mvc.ServiceRegistry;
+import com.bluetroy.httpservice.Connector;
+import com.bluetroy.servlet.ServiceRegistry;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -1,4 +1,4 @@
-package com.bluetroy.httpservice.mvc.annotation;
+package com.bluetroy.servlet.annotation;
 
 import java.lang.annotation.*;
 

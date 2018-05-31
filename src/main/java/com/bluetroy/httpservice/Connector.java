@@ -1,4 +1,4 @@
-package com.bluetroy.httpservice.mvc;
+package com.bluetroy.httpservice;
 
 
 import com.bluetroy.httpservice.http.Http;

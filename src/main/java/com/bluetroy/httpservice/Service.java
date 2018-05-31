@@ -1,10 +1,10 @@
-package com.bluetroy.httpservice.mvc;
+package com.bluetroy.httpservice;
 
 import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.httpservice.http.request.Request;
 import com.bluetroy.httpservice.http.response.Response;
 import com.bluetroy.httpservice.http.response.impl.NotFoundResponse;
-import com.bluetroy.httpservice.mvc.service.ServiceInterface;
+import com.bluetroy.servlet.service.ServiceInterface;
 import com.bluetroy.httpservice.utils.ReflectUtil;
 
 import java.lang.reflect.InvocationTargetException;

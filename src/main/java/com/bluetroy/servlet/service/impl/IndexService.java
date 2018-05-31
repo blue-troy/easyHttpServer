@@ -1,13 +1,13 @@
-package com.bluetroy.httpservice.mvc.service.impl;
+package com.bluetroy.servlet.service.impl;
 
 
 import com.bluetroy.httpservice.http.Status;
 import com.bluetroy.httpservice.http.request.Request;
 import com.bluetroy.httpservice.http.response.Response;
-import com.bluetroy.httpservice.mvc.annotation.Controller;
-import com.bluetroy.httpservice.mvc.annotation.RequestMapping;
-import com.bluetroy.httpservice.mvc.model.Student;
-import com.bluetroy.httpservice.mvc.service.ServiceInterface;
+import com.bluetroy.servlet.annotation.Controller;
+import com.bluetroy.servlet.annotation.RequestMapping;
+import com.bluetroy.mvc.model.Student;
+import com.bluetroy.servlet.service.ServiceInterface;
 
 @Controller()
 @RequestMapping(value = "/")

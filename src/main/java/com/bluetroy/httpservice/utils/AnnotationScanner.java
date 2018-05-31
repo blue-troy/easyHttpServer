@@ -1,10 +1,10 @@
 package com.bluetroy.httpservice.utils;
 
 import com.bluetroy.StartUp;
-import com.bluetroy.httpservice.mvc.Service;
-import com.bluetroy.httpservice.mvc.annotation.Controller;
-import com.bluetroy.httpservice.mvc.annotation.RequestMapping;
-import com.bluetroy.httpservice.mvc.service.ServiceInterface;
+import com.bluetroy.httpservice.Service;
+import com.bluetroy.servlet.annotation.Controller;
+import com.bluetroy.servlet.annotation.RequestMapping;
+import com.bluetroy.servlet.service.ServiceInterface;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static com.bluetroy.httpservice.mvc.ServiceRegistry.register;
+import static com.bluetroy.servlet.ServiceRegistry.register;
 
 public class AnnotationScanner {
 

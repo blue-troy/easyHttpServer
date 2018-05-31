@@ -1,4 +1,4 @@
-package com.bluetroy.httpservice.mvc.model;
+package com.bluetroy.mvc.model;
 
 public class Student {
     public Student() {
