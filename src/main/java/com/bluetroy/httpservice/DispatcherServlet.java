@@ -4,7 +4,7 @@ import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.httpservice.http.request.Request;
 import com.bluetroy.servlet.ServiceRegistry;
 import com.bluetroy.servlet.service.impl.StaticFileService;
-import com.bluetroy.httpservice.utils.RequestUtil;
+import com.bluetroy.servlet.utils.RequestUtil;
 
 public class DispatcherServlet {
     public static Service dispatch(Http http) {

@@ -4,18 +4,17 @@ import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.httpservice.http.request.Request;
 import com.bluetroy.httpservice.http.response.Response;
 import com.bluetroy.httpservice.http.response.impl.NotFoundResponse;
-import com.bluetroy.servlet.service.ServiceInterface;
-import com.bluetroy.httpservice.utils.ReflectUtil;
+import com.bluetroy.servlet.utils.ReflectUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class Service {
-    ServiceInterface serviceInterface;
+    Object serviceObject;
     Method serviceMethod;
 
-    public Service(ServiceInterface serviceInterface, Method serviceMethod) {
-        this.serviceInterface = serviceInterface;
+    public Service(Object serviceObject, Method serviceMethod) {
+        this.serviceObject = serviceObject;
         this.serviceMethod = serviceMethod;
     }
 
@@ -23,7 +22,7 @@ public class Service {
     public Http serve(Http http) {
 
         //若没有对应的服务 返回404
-        if (http.getRequest() == null || serviceInterface == null) {
+        if (http.getRequest() == null || serviceObject == null) {
             http.setResponse(new NotFoundResponse());
             return http;
         }
@@ -38,7 +37,7 @@ public class Service {
 
 
         try {
-            http.setResponse((Response) serviceMethod.invoke(serviceInterface, objects));
+            http.setResponse((Response) serviceMethod.invoke(serviceObject, objects));
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

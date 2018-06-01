@@ -1,7 +1,7 @@
 package com.bluetroy.httpservice.http.response;
 
 import com.bluetroy.httpservice.http.Status;
-import com.bluetroy.httpservice.utils.TimeUtil;
+import com.bluetroy.servlet.utils.TimeUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;

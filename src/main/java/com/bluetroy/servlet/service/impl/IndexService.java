@@ -7,11 +7,10 @@ import com.bluetroy.httpservice.http.response.Response;
 import com.bluetroy.servlet.annotation.Controller;
 import com.bluetroy.servlet.annotation.RequestMapping;
 import com.bluetroy.mvc.model.Student;
-import com.bluetroy.servlet.service.ServiceInterface;
 
 @Controller()
 @RequestMapping(value = "/")
-public class IndexService implements ServiceInterface {
+public class IndexService {
 
     @RequestMapping
     public Response service(Request request) {

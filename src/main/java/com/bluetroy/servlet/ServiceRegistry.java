@@ -2,10 +2,11 @@ package com.bluetroy.servlet;
 
 
 import com.bluetroy.httpservice.Service;
-import com.bluetroy.httpservice.utils.AnnotationScanner;
+import com.bluetroy.servlet.utils.AnnotationScanner;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -30,7 +31,7 @@ public class ServiceRegistry {
         return new Service(null,null);
     }
 
-    public static void resisterService() {
+    public static void resisterService() throws IOException {
         AnnotationScanner.registerServices();
     }
 }

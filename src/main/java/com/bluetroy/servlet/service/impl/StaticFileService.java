@@ -7,13 +7,13 @@ import com.bluetroy.httpservice.http.response.Response;
 import com.bluetroy.httpservice.http.response.impl.FileResponse;
 import com.bluetroy.servlet.annotation.Controller;
 import com.bluetroy.servlet.annotation.RequestMapping;
-import com.bluetroy.servlet.service.ServiceInterface;
+
 
 import java.io.File;
 
 @Controller()
 @RequestMapping(value = "\\S*\\.\\S*")
-public class StaticFileService implements ServiceInterface {
+public class StaticFileService {
     private static String staticPath;
     private static String root;
 

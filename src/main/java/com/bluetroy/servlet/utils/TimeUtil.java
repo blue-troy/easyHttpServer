@@ -1,4 +1,4 @@
-package com.bluetroy.httpservice.utils;
+package com.bluetroy.servlet.utils;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

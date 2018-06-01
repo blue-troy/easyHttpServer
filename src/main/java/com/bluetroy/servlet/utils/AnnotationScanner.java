@@ -1,27 +1,28 @@
-package com.bluetroy.httpservice.utils;
+package com.bluetroy.servlet.utils;
 
 import com.bluetroy.StartUp;
 import com.bluetroy.httpservice.Service;
+import com.bluetroy.servlet.ServiceRegistry;
 import com.bluetroy.servlet.annotation.Controller;
 import com.bluetroy.servlet.annotation.RequestMapping;
-import com.bluetroy.servlet.service.ServiceInterface;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import static com.bluetroy.servlet.ServiceRegistry.register;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 public class AnnotationScanner {
+    static final String packageRootURL = StartUp.class.getResource("/").getFile();
+    static final String packageName = StartUp.class.getPackageName(); //startUp 类地址
+    static final String classRootPathString = packageRootURL + packageName.replace(".", "/");
+    static final Path classRootPath = Paths.get(classRootPathString);
 
-    public static void registerServices() {
 
-        String packageRootURL = StartUp.class.getResource("/").getFile(); //项目根路径的绝对地址
-        String packageName = StartUp.class.getPackageName(); //startUp 类地址
-
-        //过滤出目录和类文件
+    public static void registerServices() throws IOException {
+        Files.walkFileTree(classRootPath, new controllerVisitor());
+/*        //过滤出目录和类文件
         FileFilter fileFilter = new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -29,12 +30,18 @@ public class AnnotationScanner {
                 return false;
             }
         };
-        registerFromPackage(packageName, packageRootURL + packageName.replace(".", "/"), fileFilter);
+        registerFromPackage(packageName, packageRootURL + packageName.replace(".", "/"), fileFilter);*/
     }
 
-    /*
+
+/*    public static void main(String[] args) throws IOException {
+        new AnnotationScanner().register();
+
+    }
+
+    *//*
      * auto registry service from package
-     * */
+     * *//*
     //TODO
     private static void registerFromPackage(String packageName, String packageURL, FileFilter fileFilter) {
         File dir = new File(packageURL);
@@ -58,7 +65,7 @@ public class AnnotationScanner {
                             Annotation requestMapping = method.getAnnotation(RequestMapping.class);
                             if (requestMapping != null) {
                                 String pixUrl = ((RequestMapping) requestMapping).value();
-                                register(preUrl + pixUrl, new Service(aClass.asSubclass(ServiceInterface.class).getConstructor().newInstance(), method));
+                                ServiceRegistry.register(preUrl + pixUrl, new Service(aClass.asSubclass(ServiceInterface.class).getConstructor().newInstance(), method));
                                 System.out.println(((RequestMapping) requestMapping).value());
                             }
                         }
@@ -85,4 +92,54 @@ public class AnnotationScanner {
                 }
             }
     }
+
+    private void register() throws IOException {
+        //扫描出所有带有controller注解的类 他们是控制器
+        Files.walkFileTree(classRootPath, new controllerVisitor());
+    }*/
+
+    private static class controllerVisitor extends SimpleFileVisitor<Path> {
+
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            if (!file.toString().endsWith(".class")) return FileVisitResult.CONTINUE; //过滤出class文件
+            String packageName = pathToPackageName(file);
+            try {
+                Class<?> aClass = Class.forName(packageName);
+                if (aClass.isAnnotationPresent(Controller.class)) {
+                    handleController(aClass);
+                }
+
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+
+            return FileVisitResult.CONTINUE;
+
+        }
+
+        private void handleController(Class<?> aClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+            String preUrl;
+            Annotation annotation = aClass.getAnnotation(RequestMapping.class);
+            if (annotation != null) {
+                preUrl = ((RequestMapping) annotation).value();
+                Method[] methods = aClass.getMethods();
+                for (Method method : methods) {
+                    Annotation requestMapping = method.getAnnotation(RequestMapping.class);
+                    if (requestMapping != null) {
+                        String pixUrl = ((RequestMapping) requestMapping).value();
+                        ServiceRegistry.register(preUrl + pixUrl, new Service(aClass.getConstructor().newInstance(), method));
+                        System.out.println(((RequestMapping) requestMapping).value());
+                    }
+                }
+            }
+        }
+
+        private String pathToPackageName(Path file) {
+            return file.toString().substring(packageRootURL.length(), file.toString().indexOf(".")).replace("/", ".");
+        }
+    }
+
 }

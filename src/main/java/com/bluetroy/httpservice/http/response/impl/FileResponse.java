@@ -3,7 +3,7 @@ package com.bluetroy.httpservice.http.response.impl;
 
 import com.bluetroy.httpservice.http.Status;
 import com.bluetroy.httpservice.http.response.Response;
-import com.bluetroy.httpservice.utils.ContentTypeUtil;
+import com.bluetroy.servlet.utils.ContentTypeUtil;
 
 import java.io.File;
 import java.io.IOException;

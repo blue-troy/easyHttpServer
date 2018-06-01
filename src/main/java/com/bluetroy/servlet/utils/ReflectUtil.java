@@ -1,4 +1,4 @@
-package com.bluetroy.httpservice.utils;
+package com.bluetroy.servlet.utils;
 
 
 import com.bluetroy.httpservice.http.request.MimeData;
