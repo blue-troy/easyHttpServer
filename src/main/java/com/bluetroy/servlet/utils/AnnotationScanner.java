@@ -1,7 +1,7 @@
 package com.bluetroy.servlet.utils;
 
 import com.bluetroy.StartUp;
-import com.bluetroy.httpservice.Service;
+import com.bluetroy.servlet.Service;
 import com.bluetroy.servlet.ServiceRegistry;
 import com.bluetroy.servlet.annotation.Controller;
 import com.bluetroy.servlet.annotation.RequestMapping;

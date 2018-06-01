@@ -2,7 +2,14 @@ package com.bluetroy.servlet.utils;
 
 
 import com.bluetroy.httpservice.http.request.MimeData;
+import com.bluetroy.httpservice.http.request.Request;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,6 +42,7 @@ public class ReflectUtil {
 
     /**
      * 转换对象到指定类型,可能抛出ClassCastException
+     * 解析基本数据类型
      *
      * @param val  对象
      * @param type 指定类型
@@ -58,5 +66,61 @@ public class ReflectUtil {
         if (val != null && val.getClass() != type) {
             throw new ClassCastException(val.getClass().getName() + " cannot be cast to " + type.getName());
         }
+    }
+
+    //todo 目前不能解析string 等类型
+    //解析自定义数据类型
+    public static Object ParseObject(Request request, Parameter parameter) {
+        //两种情况，一种是基本数据类型，一种是自定义类型
+        //判断是否为基本数据类型，若是则根据参数名称获取request中的对应数
+        try {
+            if (isBaseDataType(parameter.getType())) {
+                Object val = request.getHeader().getQueryMap().get(parameter.getName());
+                return parseObj(val, parameter.getType());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return parseDiyObject(request, parameter);
+    }
+
+    public static Object parseDiyObject(Request request, Parameter parameter) {
+        Object o = null;
+        try {
+            // 构造
+            o = parameter.getType().getDeclaredConstructor().newInstance();
+            // 注入属性值
+            for (Method method : parameter.getType().getMethods()) {
+                if (method.getName().startsWith("set")) {
+                    String property = method.getName().substring(3).toLowerCase();
+                    //todo 存在类型转换问题 request中的属性不带类型 需要找到它的类型 目前的处理方式会导致若参数中的类型为某一复杂类型则会出错(属性为某个自定义类)
+                    Object propertyObject = ReflectUtil.parseObj(request.getHeader().getQueryMap().get(property), method.getParameterTypes()[0]);
+                    method.invoke(o, propertyObject);
+                }
+            }
+
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+
+    private static boolean isBaseDataType(Class clazz) throws Exception {
+        return
+                (
+                        clazz.equals(String.class) ||
+                                clazz.equals(Integer.class) ||
+                                clazz.equals(Byte.class) ||
+                                clazz.equals(Long.class) ||
+                                clazz.equals(Double.class) ||
+                                clazz.equals(Float.class) ||
+                                clazz.equals(Character.class) ||
+                                clazz.equals(Short.class) ||
+                                clazz.equals(BigDecimal.class) ||
+                                clazz.equals(BigInteger.class) ||
+                                clazz.equals(Boolean.class) ||
+                                clazz.equals(Date.class) ||
+                                clazz.isPrimitive()
+                );
     }
 }

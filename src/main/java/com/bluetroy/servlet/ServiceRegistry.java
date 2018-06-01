@@ -1,7 +1,6 @@
 package com.bluetroy.servlet;
 
 
-import com.bluetroy.httpservice.Service;
 import com.bluetroy.servlet.utils.AnnotationScanner;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;

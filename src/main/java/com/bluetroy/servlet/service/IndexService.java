@@ -1,12 +1,12 @@
-package com.bluetroy.servlet.service.impl;
+package com.bluetroy.servlet.service;
 
 
 import com.bluetroy.httpservice.http.Status;
 import com.bluetroy.httpservice.http.request.Request;
 import com.bluetroy.httpservice.http.response.Response;
+import com.bluetroy.mvc.model.Student;
 import com.bluetroy.servlet.annotation.Controller;
 import com.bluetroy.servlet.annotation.RequestMapping;
-import com.bluetroy.mvc.model.Student;
 
 @Controller()
 @RequestMapping(value = "/")
@@ -21,9 +21,10 @@ public class IndexService {
     }
 
     @RequestMapping(value = "hello")
-    public Response hello(Request request) {
+    public Response hello(String name) {
+        System.out.println(name);
         Response response = new Response(Status.SUCCESS_200);
-        response.setContent("hello".getBytes());
+        response.setContent(new String("你好" + name).getBytes());
         return response;
     }
 

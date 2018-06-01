@@ -1,4 +1,4 @@
-package com.bluetroy.servlet.service.impl;
+package com.bluetroy.servlet.service;
 
 
 import com.bluetroy.httpservice.http.Status;

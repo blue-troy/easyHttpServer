@@ -2,8 +2,9 @@ package com.bluetroy.httpservice;
 
 import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.httpservice.http.request.Request;
+import com.bluetroy.servlet.Service;
 import com.bluetroy.servlet.ServiceRegistry;
-import com.bluetroy.servlet.service.impl.StaticFileService;
+import com.bluetroy.servlet.service.StaticFileService;
 import com.bluetroy.servlet.utils.RequestUtil;
 
 public class DispatcherServlet {
