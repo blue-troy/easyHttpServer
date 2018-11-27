@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 public class FileResponse extends Response {
     private static final Logger LOGGER = Logger.getLogger("fileResponse");
+
     public FileResponse(Status status, File file) {
         super(status);
         try {
@@ -21,7 +22,7 @@ public class FileResponse extends Response {
 
         } catch (IOException e) {
             this.setStatus(Status.BAD_REQUEST_400);
-            LOGGER.warning("文件"+file.getAbsolutePath() +"读取错误");
+            LOGGER.warning("文件" + file.getAbsolutePath() + "读取错误");
         }
     }
 }

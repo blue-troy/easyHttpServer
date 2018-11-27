@@ -4,7 +4,7 @@ package com.bluetroy.httpservice.http.response.impl;
 import com.bluetroy.httpservice.http.Status;
 import com.bluetroy.httpservice.http.response.Response;
 
-public class RedirectResponse  extends Response {
+public class RedirectResponse extends Response {
 
     public RedirectResponse(String url) {
         super(Status.TEMPORARILY_MOVED);

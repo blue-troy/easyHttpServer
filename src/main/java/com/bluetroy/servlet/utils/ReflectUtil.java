@@ -62,12 +62,6 @@ public class ReflectUtil {
         return result;
     }
 
-    private static void valid(Object val, Class<?> type) {
-        if (val != null && val.getClass() != type) {
-            throw new ClassCastException(val.getClass().getName() + " cannot be cast to " + type.getName());
-        }
-    }
-
     //todo 目前不能解析string 等类型
     //解析自定义数据类型
     public static Object ParseObject(Request request, Parameter parameter) {
@@ -103,6 +97,12 @@ public class ReflectUtil {
             e.printStackTrace();
         }
         return o;
+    }
+
+    private static void valid(Object val, Class<?> type) {
+        if (val != null && val.getClass() != type) {
+            throw new ClassCastException(val.getClass().getName() + " cannot be cast to " + type.getName());
+        }
     }
 
     private static boolean isBaseDataType(Class clazz) throws Exception {

@@ -8,7 +8,6 @@ import com.bluetroy.httpservice.http.response.impl.FileResponse;
 import com.bluetroy.servlet.annotation.Controller;
 import com.bluetroy.servlet.annotation.RequestMapping;
 
-
 import java.io.File;
 
 @Controller()

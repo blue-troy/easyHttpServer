@@ -3,8 +3,6 @@ package com.bluetroy.servlet.utils;
 import com.bluetroy.StartUp;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +21,7 @@ public class ContentTypeUtil {
 
     private static void scanContentType() {
         try {
-            String contentType = new String(Files.readAllBytes(Paths.get(StartUp.class.getResource("/").getFile()+"contentType.txt")));
+            String contentType = new String(StartUp.class.getResourceAsStream("/contentType.txt").readAllBytes());
             String[] contentTypeList = contentType.split("[\n]");
             for (String s : contentTypeList) {
                 String[] line = s.split("\t");

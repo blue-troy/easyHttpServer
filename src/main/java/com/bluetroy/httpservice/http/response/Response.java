@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 public class Response {
     protected static final String HTTP_VERSION = "HTTP/1.1";
     protected static final String DEFAULT_CHARSET = "utf-8";
+    private static final Logger LOGGER = Logger.getLogger("response");
     protected Map<String, String> heads;
     protected byte[] content;
     private Status status;
     //由于最后写入SocketChannel需要ByteBuffer,那么我们需要将响应变成ByteBuffer
     private ByteBuffer finalData = null;
-    private static final Logger LOGGER = Logger.getLogger("response");
 
     public Response(Status status) {
         this.status = status;

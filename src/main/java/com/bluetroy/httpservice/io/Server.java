@@ -1,7 +1,7 @@
 package com.bluetroy.httpservice.io;
 
-import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.httpservice.Connector;
+import com.bluetroy.httpservice.http.Http;
 import com.bluetroy.servlet.ServiceRegistry;
 
 import java.io.IOException;
@@ -18,31 +18,6 @@ import java.util.logging.Logger;
 public class Server {
     private static final Logger LOGGER = Logger.getLogger("server");
     private Selector selector;
-
-    private boolean init() {
-        long start = System.currentTimeMillis();
-        ServerSocketChannel serverSocketChannel = null;
-        try {
-            ServiceRegistry.resisterService();
-            serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);//设置非阻塞
-            serverSocketChannel.bind(new InetSocketAddress(8080));
-            selector = Selector.open();
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);//注册ACCEPT事件
-        } catch (IOException e) {
-            LOGGER.warning("初始化错误" + e);
-            if (serverSocketChannel != null) {
-                try {
-                    serverSocketChannel.close();
-                } catch (IOException e1) {
-                    LOGGER.warning("服务器关闭错误" + e1);
-                }
-            }
-            return false;
-        }
-        LOGGER.info("服务器启动耗时" + (System.currentTimeMillis() - start) + "ms");
-        return true;
-    }
 
     public void start() {
 
@@ -100,5 +75,30 @@ public class Server {
         } catch (IOException e) {
             LOGGER.warning("选择器关闭失败" + e);
         }
+    }
+
+    private boolean init() {
+        long start = System.currentTimeMillis();
+        ServerSocketChannel serverSocketChannel = null;
+        try {
+            ServiceRegistry.resisterService();
+            serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.configureBlocking(false);//设置非阻塞
+            serverSocketChannel.bind(new InetSocketAddress(8080));
+            selector = Selector.open();
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);//注册ACCEPT事件
+        } catch (IOException e) {
+            LOGGER.warning("初始化错误" + e);
+            if (serverSocketChannel != null) {
+                try {
+                    serverSocketChannel.close();
+                } catch (IOException e1) {
+                    LOGGER.warning("服务器关闭错误" + e1);
+                }
+            }
+            return false;
+        }
+        LOGGER.info("服务器启动耗时" + (System.currentTimeMillis() - start) + "ms");
+        return true;
     }
 }

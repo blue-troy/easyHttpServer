@@ -6,11 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="easyHttpServer" />
+        <module name="httpServer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="easyHttpServer" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-parameters" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="easyHttpServer" options="" />
+      <module name="httpServer" options="" />
+    </option>
   </component>
 </project>

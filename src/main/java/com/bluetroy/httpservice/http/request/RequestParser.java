@@ -47,7 +47,7 @@ public class RequestParser {
         Map<String, String> formMap = Collections.EMPTY_MAP;
         Map<String, MimeData> mineMap = Collections.EMPTY_MAP;
         String contentType = header.getContentType();
-        if (contentType==null||contentType.isEmpty()) return new RequestBody();
+        if (contentType == null || contentType.isEmpty()) return new RequestBody();
         if (header.getContentType().contains("application/x-www-form-urlencoded")) {
             parseParameters(bodyString, formMap);
         }
@@ -94,7 +94,9 @@ public class RequestParser {
             headMap.put(keyValue[0].trim(), keyValue[1].trim());
         }
 
+        //todo 对象的序列化，反序列化？
         //从path中提取get 类型的queryString exam：path://s.taobao.com/search?q=神&imgfile=a
+        // path://s.taobao.com/search?student= name=heyixin&age=11
         int index = path.indexOf('?');
         Map<String, String> queryMap = Collections.emptyMap();
         String queryString = null;

@@ -82,11 +82,11 @@ public enum HttpHeader {
         lowerName = name.toLowerCase();
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String toLowerName() {
         return lowerName;
+    }
+
+    public String getName() {
+        return name;
     }
 }
